@@ -3,6 +3,9 @@ pipeline {
     tools {
         maven 'MAVEN_3.9.8'
     }
+    triggers {
+        pollSCM('* * * * *')
+    }
     stages {
         stage('VCS') {
             steps {
@@ -15,12 +18,9 @@ pipeline {
                 sh 'building code.....'
                 sh 'static code analysis'
                 sh 'archive the package into jfrog'
+                sh 'quality gate'
             }
         }
-        stage('deploy-prod') {
-            steps {
-                sh 'deploy into production'
-            }
-        }
+
     }
 }
